@@ -6,11 +6,17 @@ OutputData = [0] * 20
 epoch = 10
 
 InputData, OutputData = DataGen.generateData(InputData, OutputData)
-net = Network(InputData, OutputData, 0.001)
-#net.Train(InputData, OutputData)
+net = Network(InputData, OutputData, 0.0001)
+net.Initialize()
+net.Train(InputData, OutputData)
 
 for i in range(epoch):
-    print(f"Epoch:{i}")
-    InputData, OutputData = DataGen.generateData(InputData, OutputData)
+    print(f"Epoch:{i + 1}")
+    DataGen.Shuffle(InputData, OutputData)
     net.Train(InputData, OutputData)
+
+InputData, OutputData = DataGen.generateData(InputData, OutputData)
+net.Test(InputData, OutputData)
+
+
 

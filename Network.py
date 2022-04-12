@@ -9,7 +9,7 @@ class Relu:
 
     @staticmethod
     def dFunc(data):
-        return np.array([1 if i >= 0 else 0 for i in data])
+        return 1 if data >= 0 else 0
 
 
 class Sigmoid:
@@ -83,16 +83,34 @@ class Network:
             self.Weights.reverse()
 
     def Train(self, ID, OD):
-        print("Train:")
         self.InputDataSet = ID
         self.OutputDataSet = OD
-        self.Initialize()
+        print(f"Previous error{self.train_error}")
         self.train_error = 0
         for i in range(len(self.InputDataSet)):
+            for k in range(len(self.Input_layer)):
+                self.Input_layer[k] = self.InputDataSet[i][k]
             self.Forward_Propagate()
             expected = self.OutputDataSet[i]
             self.Backward_Propagate(expected)
             self.train_error += sum([(self.Output_layer[i]-expected[i])**2 for i in range(len(self.Output_layer))])
-            self.train_error /= len(self.InputDataSet)
+        self.train_error /= len(self.InputDataSet)
         print(f"Train error->{self.train_error}")
+
+    def Test(self, ID, OD):
+        print("Test:")
+        self.InputDataSet = ID
+        self.OutputDataSet = OD
+        self.validation_error = 0
+        for i in range(len(self.InputDataSet)):
+            expected = self.OutputDataSet[i]
+            for k in range(len(self.Input_layer)):
+                self.Input_layer[k] = self.InputDataSet[i][k]
+            self.Forward_Propagate()
+            self.validation_error += sum([(self.Output_layer[i] - expected[i]) ** 2 for i in range(len(self.Output_layer))])
+        self.validation_error /= len(self.InputDataSet)
+        print(f"Validation error->{self.validation_error}")
+
+
+
 

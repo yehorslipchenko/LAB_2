@@ -1,5 +1,6 @@
 import math
 import random
+import numpy
 
 x1 = 5
 x2 = 4
@@ -74,3 +75,11 @@ def generateData(X, Y):
 def ShowData(X, Y):
     for i in range(len(X)):
         print(f"{X[i]}===============>{Y[i]}")
+
+
+def Shuffle(X, Y):
+    rng_state = numpy.random.get_state()
+    numpy.random.shuffle(X)
+    numpy.random.set_state(rng_state)
+    numpy.random.shuffle(Y)
+
